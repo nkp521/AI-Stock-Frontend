@@ -9,8 +9,11 @@
 <body>
   <h1>AI Trading Dashboard</h1>
   <input id="symbolInput" placeholder="Enter stock symbol (e.g., AAPL)" />
-  <button onclick="addSymbol()">Add</button>
-  <div id="charts"></div>
+  <button onclick="fetchData()">Fetch</button>
+
+  <div id="signals"></div>
+  <div id="chart"></div>
+
   <script src="main.js"></script>
 </body>
 </html>
