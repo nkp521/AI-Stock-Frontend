@@ -18,27 +18,27 @@ const fetchData = async () => {
 
   const data = await response.json();
 
-  // Show RSI signal - Use backend server to show a RSI return
+  // Show RSI signal
   const signalsDiv = document.getElementById("signals");
   signalsDiv.innerHTML = "<h3>Signals</h3>";
   const rsiText = document.createElement("div");
   rsiText.textContent = `RSI: ${data.rsi || "N/A"}`;
   signalsDiv.appendChild(rsiText);
 
-  // Show Sentiment Score - Use backend server to show Sentiment Score
+  // Show Sentiment Score
   const sentimentP = document.createElement("div");
   sentimentP.textContent = `Sentiment Score: ${data.sentiment ?? "N/A"}`;
   signalsDiv.appendChild(sentimentP);
 
-  // Show Trade Signal - Use backend trade data to display signals
+  // Show Trade Signal
   const signalTag = document.createElement("div");
   signalTag.textContent = `Trade Signal: ${data.signals?.join(", ") || "None"}`;
   signalsDiv.appendChild(signalTag);
 
-  // Show price chart data - Shows a per stock price data
+  // Show price chart data with most recent at the top
   const chartDiv = document.getElementById("chart");
   chartDiv.innerHTML = "<h3>Prices</h3>";
-  data.prices.forEach(point => {
+  [...data.prices].reverse().forEach(point => {
     const line = document.createElement("div");
     line.textContent = `${point.timestamp} - $${Number(point.Close).toFixed(2)}`;
     chartDiv.appendChild(line);
