@@ -1,10 +1,10 @@
-//Fetch button logic
+// Add logic to Fetch button - USE API Data to display stock analysis
 const fetchData = async () => {
   const inputBox = document.getElementById("symbolInput");
   const symbol = inputBox.value.trim().toUpperCase();
 
   if (!symbol) {
-    alert("Enter a real symbol bro.");
+    alert("Enter a valid stock symbol.");
     return;
   }
 
@@ -12,32 +12,35 @@ const fetchData = async () => {
   const response = await fetch(url);
 
   if (!response.ok) {
-    alert("Something ain't right brother!");
+    alert("Failed to fetch stock data.");
     return;
   }
 
   const data = await response.json();
 
-  // Add logic to Show signals
+  // Show RSI signal - Use backend server to show a RSI return
   const signalsDiv = document.getElementById("signals");
   signalsDiv.innerHTML = "<h3>Signals</h3>";
-  data.signals.forEach(signal => {
-    const div = document.createElement("div");
-    div.textContent = signal;
-    signalsDiv.appendChild(div);
-  });
+  const rsiText = document.createElement("div");
+  rsiText.textContent = `RSI: ${data.rsi || "N/A"}`;
+  signalsDiv.appendChild(rsiText);
 
-  // Add Logic to Show sentiment
-  const sentimentP = document.createElement("p");
-  sentimentP.textContent = "Sentiment Score: " + data.sentiment;
+  // Show Sentiment Score - Use backend server to show Sentiment Score
+  const sentimentP = document.createElement("div");
+  sentimentP.textContent = `Sentiment Score: ${data.sentiment ?? "N/A"}`;
   signalsDiv.appendChild(sentimentP);
 
-  // Add logic to Show prices
+  // Show Trade Signal - Use backend trade data to display signals
+  const signalTag = document.createElement("div");
+  signalTag.textContent = `Trade Signal: ${data.signals?.join(", ") || "None"}`;
+  signalsDiv.appendChild(signalTag);
+
+  // Show price chart data - Shows a per stock price data
   const chartDiv = document.getElementById("chart");
   chartDiv.innerHTML = "<h3>Prices</h3>";
   data.prices.forEach(point => {
     const line = document.createElement("div");
-    line.textContent = point.timestamp + " - $" + Number(point.Close).toFixed(2);
+    line.textContent = `${point.timestamp} - $${Number(point.Close).toFixed(2)}`;
     chartDiv.appendChild(line);
   });
 };
